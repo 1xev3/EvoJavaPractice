@@ -1,10 +1,9 @@
 package com.example.serving_web_content.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -18,23 +17,22 @@ public class Person {
     private String lastname;
     private LocalDate birthday;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Message> messages;
+
     public Person() {
     }
 
-    public Person(int id, String firstname, String surname, String lastname, LocalDate birthday) {
-        this.id = id;
+    public Person(String firstname, String surname, String lastname, LocalDate birthday, List<Message> messages) {
         this.firstname = firstname;
         this.surname = surname;
         this.lastname = lastname;
         this.birthday = birthday;
+        this.messages = messages;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstname() {
@@ -67,5 +65,18 @@ public class Person {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public List<Message> getMessages()
+    {
+        return messages;
+    }
+    public Message getMessage(int id)
+    {
+        return messages.get(id);
     }
 }

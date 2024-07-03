@@ -1,8 +1,10 @@
 package com.example.serving_web_content.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
 
@@ -16,22 +18,22 @@ public class Message {
     private String text;
     private LocalDate time;
 
+    @ManyToOne
+    @JsonIgnore
+    private Person person;
+
     public Message() {
     }
 
-    public Message(int id, String title, String text, LocalDate time) {
-        this.id = id;
+    public Message(String title, String text, LocalDate time, Person person) {
         this.title = title;
         this.text = text;
         this.time = time;
+        this.person = person;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -50,12 +52,19 @@ public class Message {
         this.text = text;
     }
 
-
     public LocalDate getTime() {
         return time;
     }
 
     public void setTime(LocalDate time) {
         this.time = time;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
