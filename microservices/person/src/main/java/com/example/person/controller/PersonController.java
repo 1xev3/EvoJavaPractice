@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -22,8 +23,8 @@ public class PersonController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${api.weather}")
-    private String apiWeatherUrl;
+    @Value("${api.location}")
+    private String apiLocationUrl;
 
     @GetMapping
     public Iterable<Person> findAll() {
@@ -69,8 +70,18 @@ public class PersonController {
     public ResponseEntity<Weather> getWeather(@PathVariable int id) {
         if (repository.existsById(id)) {
             String location = repository.findById(id).get().getLocation();
-            Weather weather = restTemplate.getForObject(apiWeatherUrl + "/weather?location=" + location, Weather.class);
-            return new ResponseEntity<>(weather, HttpStatus.OK);
+
+            try {
+                Weather weather = restTemplate.getForObject(
+                        String.format("%s/location/weather?name=%s",
+                                apiLocationUrl,
+                                location),
+                        Weather.class
+                );
+                return new ResponseEntity<>(weather, HttpStatus.OK);
+            } catch (HttpClientErrorException e) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }

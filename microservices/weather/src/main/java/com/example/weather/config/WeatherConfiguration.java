@@ -3,7 +3,6 @@ package com.example.weather.config;
 import com.example.weather.model.Coord;
 import com.example.weather.model.Root;
 import com.example.weather.model.TimeCachedRoot;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +13,6 @@ import java.util.HashMap;
 public class WeatherConfiguration {
 
     @Bean
-    @LoadBalanced
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }

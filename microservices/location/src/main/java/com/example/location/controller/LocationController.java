@@ -33,7 +33,7 @@ public class LocationController {
 
         Optional<Geodata> result = repository.findByName(name);
         if (result.isPresent()) {
-            return new ResponseEntity<Optional<Geodata>>(result, HttpStatus.OK);
+            return new ResponseEntity<Geodata>(result.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

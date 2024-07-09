@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 public class LocationConfig {
 
     @Bean
-    @LoadBalanced
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
